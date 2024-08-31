@@ -1,5 +1,3 @@
-using System;
-
 namespace ATech.MovieService.Domain.Movies;
 
 public class Movie

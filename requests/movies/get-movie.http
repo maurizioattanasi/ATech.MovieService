@@ -1,0 +1,5 @@
+## Get movie by Id
+
+@movieId = "123"
+
+{{baseUrl}}/movies?id={{movieId}}
