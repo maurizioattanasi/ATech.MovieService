@@ -1,0 +1,7 @@
+{
+    "rest-client.environmentVariables": {
+        "local": {
+            "baseUrl": "https://localhost:7102/api"
+        }
+    }
+}

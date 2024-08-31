@@ -1,6 +1,6 @@
-using System;
-
+using ATech.MovieService.Application.Movies;
 using ATech.MovieService.Infrastructure.Common.Persistence;
+using ATech.MovieService.Infrastructure.Movies;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -32,6 +32,8 @@ public static class DependencyInjection
         services
             .AddDbContext<AppDbContext>(options => options.UseMongoDB(connectionString, dbSettings.DataBaseName));
 
+        services.AddScoped<IMovieRepository, MovieRepository>();
+        
         return services;
     }
 
