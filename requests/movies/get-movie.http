@@ -1,5 +1,9 @@
-## Get movie by Id
+### Get movie by Id
 
-@movieId = "123"
+@movieId = 573a1390f29313caabcd42e8
 
-{{baseUrl}}/movies?id={{movieId}}
+GET {{baseUrl}}/movies/{{movieId}} HTTP/1.1
+
+### Get all movies
+
+GET {{baseUrl}}/movies HTTP/1.1
