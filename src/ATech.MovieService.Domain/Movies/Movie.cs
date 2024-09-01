@@ -1,12 +1,18 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace ATech.MovieService.Domain.Movies;
 
+[Table("movies")]
 public class Movie
 {
     public string Id { get; set; } = null!;
 
-    public string Title { get; set; } = null!;
+    [Column("title")]
+    public string? Title { get; set; }
 
-    public string Rated { get; set; } = null!;
+    [Column("rated")]
+    public string? Rated { get; set; }
 
-    public string Plot { get; set; } = null!;
+    [Column("plot")]
+    public string? Plot { get; set; }
 }

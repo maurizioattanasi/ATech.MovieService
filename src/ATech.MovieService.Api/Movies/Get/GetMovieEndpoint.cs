@@ -1,4 +1,5 @@
-using ATech.MovieService.Domain.Movies;
+using ATech.MovieService.Api.Movies.Dto;
+using ATech.MovieService.Application.Movies.Queries;
 
 using FastEndpoints;
 
@@ -10,7 +11,7 @@ public class GetMovieEndpoint(IMediator mediator, ILogger<GetMovieEndpoint> logg
 {
     public override void Configure()
     {
-        Get("api/movies");
+        Get("api/movies/{id}");
 
         Options(x => x.WithTags("Movies"));
 
@@ -22,11 +23,23 @@ public class GetMovieEndpoint(IMediator mediator, ILogger<GetMovieEndpoint> logg
         try
         {
             logger.LogInformation("Getting movie with ID: {Id}", req.Id);
-            await Task.Yield();
+
+            var query = new GetMovieByIdQuery(req.Id);
+
+            var movie = await mediator.Send(query, ct);
+
+            if (movie is null)
+            {
+                await SendNotFoundAsync(ct);
+                return;
+            }
+
+            Response = new GetMovieResponse(MovieMapper.ToDto(movie));
         }
         catch (Exception ex)
         {
             logger.LogError(ex, "An error occurred while getting movie.");
+            throw;
         }
     }
 }
@@ -34,10 +47,3 @@ public class GetMovieEndpoint(IMediator mediator, ILogger<GetMovieEndpoint> logg
 public record GetMovieRequest(string Id);
 
 public record GetMovieResponse(MovieDto Movie);
-
-public record MovieDto(string Id, string Title, string Rated, string Plot);
-
-public static class MovieMapper
-{
-    public static MovieDto ToDto(Movie movie) => new MovieDto(movie.Id, movie.Title, movie.Rated, movie.Plot);
-}

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 using MongoDB.Bson;
+using MongoDB.EntityFrameworkCore.Extensions;
 
 namespace ATech.MovieService.Infrastructure.Movies;
 
@@ -15,7 +16,7 @@ public class MovieConfiguration : IEntityTypeConfiguration<Movie>
             .HasKey(e => e.Id);
 
         builder
-            .Property(e=>e.Id)
+            .Property(e => e.Id)
             .HasConversion(
                 v => new ObjectId(v),
                 v => v.ToString()

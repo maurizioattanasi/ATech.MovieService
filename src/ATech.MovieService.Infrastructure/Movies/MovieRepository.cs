@@ -1,4 +1,4 @@
-using ATech.MovieService.Application.Movies;
+using ATech.MovieService.Application.Movies.Interfaces;
 using ATech.MovieService.Domain.Movies;
 using ATech.MovieService.Infrastructure.Common.Persistence;
 using ATech.Repository.EntityFrameworkCore;
