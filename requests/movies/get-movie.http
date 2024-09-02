@@ -6,4 +6,7 @@ GET {{baseUrl}}/movies/{{movieId}} HTTP/1.1
 
 ### Get all movies
 
-GET {{baseUrl}}/movies HTTP/1.1
+@pageNumber = 1
+@pageSize = 10
+
+GET {{baseUrl}}/movies?pageNumber={{pageNumber}}&pageSize={{pageSize}} HTTP/1.1

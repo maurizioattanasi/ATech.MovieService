@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="ATech.Pagination" Version="0.1.0" />
     <PackageReference Include="ATech.Repository" Version="2.0.2" />
     <PackageReference Include="MediatR" Version="12.4.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />

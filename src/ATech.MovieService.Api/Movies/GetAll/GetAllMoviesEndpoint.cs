@@ -1,5 +1,6 @@
 using ATech.MovieService.Api.Movies.Dto;
 using ATech.MovieService.Application.Movies.Queries;
+using ATech.Pagination;
 
 using FastEndpoints;
 
@@ -24,7 +25,7 @@ public class GetAllMoviesEndpoint(IMediator mediator, ILogger<GetAllMoviesEndpoi
         {
             logger.LogInformation("Getting all movies.");
 
-            var movies = await mediator.Send(new GetMoviesQuery(), ct);
+            var movies = await mediator.Send(new GetMoviesQuery(new PagingParameters { PageNumber = req.PageNumber, PageSize = req.PageSize }), ct);
 
             if (movies is null || movies.Count() == 0)
             {
@@ -32,10 +33,8 @@ public class GetAllMoviesEndpoint(IMediator mediator, ILogger<GetAllMoviesEndpoi
                 return;
             }
 
-            var dtos = movies
-                .Select(m => MovieMapper.ToDto(m)).Take(10).ToArray();
-
-            Response = new GetAllMoviesResponse(dtos);
+            Response = new GetAllMoviesResponse(movies
+                .Select(m => MovieMapper.ToDto(m)));
         }
         catch (Exception ex)
         {
@@ -44,6 +43,6 @@ public class GetAllMoviesEndpoint(IMediator mediator, ILogger<GetAllMoviesEndpoi
     }
 }
 
-public record GetAllMoviesRequest(uint Page, int PageSize);
+public record GetAllMoviesRequest(int PageNumber = 1, int PageSize = 10);
 
-public record GetAllMoviesResponse(MovieDto[] Movies);
+public record GetAllMoviesResponse(IEnumerable<MovieDto> Movies);

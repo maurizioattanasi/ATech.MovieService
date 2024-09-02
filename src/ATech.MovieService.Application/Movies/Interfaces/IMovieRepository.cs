@@ -5,5 +5,5 @@ namespace ATech.MovieService.Application.Movies.Interfaces;
 
 public interface IMovieRepository : IRepository<Movie, string>
 {
-
+    
 }
