@@ -33,8 +33,9 @@ public class GetAllMoviesEndpoint(IMediator mediator, ILogger<GetAllMoviesEndpoi
                 return;
             }
 
-            Response = new GetAllMoviesResponse(movies
-                .Select(m => MovieMapper.ToDto(m)));
+            var dtos = movies.Select(m => MovieMapper.ToDto(m));
+            
+            Response = new GetAllMoviesResponse(new PagedList<Movie>(dtos, dtos.TotalCount, dtos.CurrentPage, dtos.PageSize));
         }
         catch (Exception ex)
         {
@@ -45,4 +46,8 @@ public class GetAllMoviesEndpoint(IMediator mediator, ILogger<GetAllMoviesEndpoi
 
 public record GetAllMoviesRequest(int PageNumber = 1, int PageSize = 10);
 
-public record GetAllMoviesResponse(IEnumerable<MovieDto> Movies);
+public record GetAllMoviesResponse(PagedList<MovieDto> Movies)
+{
+    [ToHeader("x-pagination")]
+    public string PaginationMetadata => JsonConvert.SerializeObject(Vehicles.PaginationMetadata);
+}
