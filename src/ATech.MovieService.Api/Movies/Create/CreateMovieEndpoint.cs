@@ -45,7 +45,3 @@ public class CreateMovieEndpoint(IMediator mediator, ILogger<CreateMovieEndpoint
         }
     }
 }
-
-public record CreateMovieRequest(NewMovieDto Movie);
-
-public record CreateMovieResponse(MovieDto Movie);

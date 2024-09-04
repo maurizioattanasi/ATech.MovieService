@@ -4,8 +4,8 @@ POST {{baseUrl}}/movies HTTP/1.1
 Content-Type: application/json
 
 {   
-    "movie": { "title": "The Matrix",
-    "plot": "When a beautiful stranger leads computer hacker Neo to a forbidding underworld, he discovers the shocking truth--the life he knows is the elaborate deception of an evil cyber-intelligence."
+    "movie": { "title": "The Matrix Resurrections",
+    "plot": "Return to a world of two realities: one, everyday life; the other, what lies behind it. To find out if his reality is a construct, to truly know himself, Mr. Anderson will have to choose to follow the white rabbit once more."
   }
 }
 

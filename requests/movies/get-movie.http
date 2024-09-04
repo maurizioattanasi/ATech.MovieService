@@ -1,12 +1,12 @@
 ### Get movie by Id
 
-@movieId = 573a1390f29313caabcd446f
+@movieId = 66d8cfbb796189d89f99a9d4
 
 GET {{baseUrl}}/movies/{{movieId}} HTTP/1.1
 
 ### Get all movies
 
-@pageNumber = 1
+@pageNumber = 214
 @pageSize = 100
 
 GET {{baseUrl}}/movies?pageNumber={{pageNumber}}&pageSize={{pageSize}} HTTP/1.1
