@@ -1,6 +1,6 @@
 ### Get movie by Id
 
-@movieId = 573a1390f29313caabcd42e8
+@movieId = 573a1390f29313caabcd446f
 
 GET {{baseUrl}}/movies/{{movieId}} HTTP/1.1
 

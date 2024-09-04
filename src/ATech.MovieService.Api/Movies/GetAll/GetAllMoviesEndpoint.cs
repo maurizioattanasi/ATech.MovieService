@@ -1,10 +1,13 @@
 using ATech.MovieService.Api.Movies.Dto;
 using ATech.MovieService.Application.Movies.Queries;
+using ATech.MovieService.Domain.Movies;
 using ATech.Pagination;
 
 using FastEndpoints;
 
 using MediatR;
+
+using Newtonsoft.Json;
 
 namespace ATech.MovieService.Api.Movies.GetAll;
 
@@ -35,7 +38,7 @@ public class GetAllMoviesEndpoint(IMediator mediator, ILogger<GetAllMoviesEndpoi
 
             var dtos = movies.Select(m => MovieMapper.ToDto(m));
             
-            Response = new GetAllMoviesResponse(new PagedList<Movie>(dtos, dtos.TotalCount, dtos.CurrentPage, dtos.PageSize));
+            Response = new GetAllMoviesResponse(new PagedList<MovieDto>(dtos.ToList(), movies.TotalCount, movies.CurrentPage, movies.PageSize));
         }
         catch (Exception ex)
         {
@@ -49,5 +52,5 @@ public record GetAllMoviesRequest(int PageNumber = 1, int PageSize = 10);
 public record GetAllMoviesResponse(PagedList<MovieDto> Movies)
 {
     [ToHeader("x-pagination")]
-    public string PaginationMetadata => JsonConvert.SerializeObject(Vehicles.PaginationMetadata);
+    public string PaginationMetadata => JsonConvert.SerializeObject(Movies.PaginationMetadata);
 }
