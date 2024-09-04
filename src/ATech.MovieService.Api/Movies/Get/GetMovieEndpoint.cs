@@ -39,7 +39,7 @@ public class GetMovieEndpoint(IMediator mediator, ILogger<GetMovieEndpoint> logg
         catch (Exception ex)
         {
             logger.LogError(ex, "An error occurred while getting movie.");
-            throw;
+            await SendErrorsAsync(StatusCodes.Status500InternalServerError, ct);
         }
     }
 }
