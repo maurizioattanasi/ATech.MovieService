@@ -1,0 +1,11 @@
+### Add a new Movie
+
+POST {{baseUrl}}/movies HTTP/1.1
+Content-Type: application/json
+
+{   
+    "movie": { "title": "The Matrix Resurrections",
+    "plot": "Return to a world of two realities: one, everyday life; the other, what lies behind it. To find out if his reality is a construct, to truly know himself, Mr. Anderson will have to choose to follow the white rabbit once more."
+  }
+}
+

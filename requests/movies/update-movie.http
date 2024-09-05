@@ -1,0 +1,13 @@
+### Update Movie
+
+@movieId = 66da0950747a6aa08b69653c
+
+PATCH {{baseUrl}}/movies/{{movieId}}
+Content-Type: application/json
+
+{
+    "movie":
+    {
+        "rated": "F"
+    }
+}
