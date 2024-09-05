@@ -1,6 +1,6 @@
 # ATech.MovieService
 
-Demo Sample Project of a microservice with:
+Sample Project of a microservice with:
 
 - [Clean Architecture](https://betterprogramming.pub/the-clean-architecture-beginners-guide-e4b7058c1165);
 - [Domain Driven Design](https://martinfowler.com/bliki/DomainDrivenDesign.html);
