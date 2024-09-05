@@ -1,5 +1,12 @@
 # ATech.MovieService
 
+!Build Status
+!Coverage
+!License
+!Version
+!Dependencies
+!Downloads
+
 Sample Project of a microservice with:
 
 - [Clean Architecture](https://betterprogramming.pub/the-clean-architecture-beginners-guide-e4b7058c1165);
