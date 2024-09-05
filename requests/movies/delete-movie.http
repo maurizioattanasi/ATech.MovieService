@@ -1,0 +1,5 @@
+### Delete movie
+
+@movieId = 66d9ff2a0a1511924a9b23bd
+
+DELETE  {{baseUrl}}/movies/{{movieId}} HTTP/1.1
