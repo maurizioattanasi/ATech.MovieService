@@ -7,7 +7,7 @@
 ![MongoDB](https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white)
 ![.Net](https://img.shields.io/badge/.NET-5C2D91?style=for-the-badge&logo=.net&logoColor=white)
 
-Sample Project of a microservice with:
+Sample Project of a .NET 8 Service with:
 
 - [Clean Architecture](https://betterprogramming.pub/the-clean-architecture-beginners-guide-e4b7058c1165);
 - [Domain Driven Design](https://martinfowler.com/bliki/DomainDrivenDesign.html);
