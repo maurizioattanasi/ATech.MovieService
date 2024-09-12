@@ -26,7 +26,7 @@ The solution is structured around the concepts defined by clean architecture.
 
 ![onion-architecture](./img/onion-architecture.jpeg)
 
-The image above is one of the possible representations of onion architecture. Each of the layers represented in the diagram corresponds to a design of the solution.
+The image above is one of the possible representations of onion architecture. Each of the layers represented in the diagram corresponds to a project of the solution.
 
 | Name                              | Description                                                                                                                       | Type     |
 | :-------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------- | :------- |
