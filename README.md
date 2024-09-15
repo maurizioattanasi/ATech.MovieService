@@ -20,13 +20,13 @@ Example design of a .NET 8 service adopting the following paradigms and/or tools
 
 This project is an example of a possible implementation of some of the concepts, strategies and technologies, listed in the preface that, to date, I use in my services.
 
-### Solution structure
+### Solution anatomy
 
-The solution is structured around the concepts defined by clean architecture.
+The solution is structured around one of the concepts defined by clean architecture, *Onion Architecture*, a software design pattern that offers several advantages, particularly in terms of maintainability, testability, and flexibility.
 
 ![onion-architecture](./img/onion-architecture.jpeg)
 
-The image above is one of the possible representations of onion architecture. Each of the layers represented in the diagram corresponds to a project of the solution.
+The image above is one of the possible representations of onion architecture. Each of the layers represented in the diagram corresponds to a design of the solution.
 
 | Name                              | Description                                                                                                                       | Type     |
 | :-------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------- | :------- |
@@ -35,3 +35,25 @@ The image above is one of the possible representations of onion architecture. Ea
 | ATech.MovieService.Infrastructure | Infrastructure manages database access and external services.                                                                     | classlib |
 | ATech.MovieService.Api            | Presentation layer that enables interaction with users or external systems, using the services provided by the Application layer. | web      |
 |                                   |                                                                                                                                   |          |
+
+The three layers are injected as services in **Program.cs**.
+
+```cs
+var builder = WebApplication.CreateBuilder(args);
+
+...
+
+{
+    builder
+        .Services
+        .AddPresentation()
+        .AddApplication(configuration)
+        .AddInfrastructure(configuration);
+}
+```
+
+1. **Presentation Layer**: The AddPresentation() method registers services related to the presentation layer, which typically includes controllers, views, and other UI components.
+2. **Application Layer**: The AddApplication(configuration) method registers services for the application layer, which contains the business logic and application-specific rules.
+3. **Infrastructure Layer**: The AddInfrastructure(configuration) method registers services for the infrastructure layer, which handles data access, external services, and other infrastructure-related concerns.
+   
+By organizing the code in this manner, the application adheres to the principles of Onion Architecture, promoting a clear separation of concerns and dependency inversion. This ensures that each layer interacts with the others through well-defined interfaces, enhancing maintainability and testability.
