@@ -21,7 +21,9 @@ Example design of a .NET 8 service adopting the following paradigms and/or tools
 This project is an example of a possible implementation of some of the concepts, strategies and technologies, listed in the preface that, to date, I use in my services.
 
 ### Solution anatomy
+### Solution anatomy
 
+The solution is structured around one of the concepts defined by clean architecture, *Onion Architecture*, a software design pattern that offers several advantages, particularly in terms of maintainability, testability, and flexibility.
 The solution is structured around one of the concepts defined by clean architecture, *Onion Architecture*, a software design pattern that offers several advantages, particularly in terms of maintainability, testability, and flexibility.
 
 ![onion-architecture](./img/onion-architecture.jpeg)
@@ -36,7 +38,7 @@ The image above is one of the possible representations of onion architecture. Ea
 | ATech.MovieService.Api            | Presentation layer that enables interaction with users or external systems, using the services provided by the Application layer. | web      |
 |                                   |                                                                                                                                   |          |
 
-The three layers are injected as services in **Program.cs**.
+THe three layers are injected as services in **Program.cs**.
 
 ```cs
 var builder = WebApplication.CreateBuilder(args);
