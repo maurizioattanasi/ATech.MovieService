@@ -38,7 +38,7 @@ The image above is one of the possible representations of onion architecture. Ea
 | ATech.MovieService.Api            | Presentation layer that enables interaction with users or external systems, using the services provided by the Application layer. | web      |
 |                                   |                                                                                                                                   |          |
 
-THe three layers are injected as services in **Program.cs**.
+The three layers are injected as services in **Program.cs**.
 
 ```cs
 var builder = WebApplication.CreateBuilder(args);
