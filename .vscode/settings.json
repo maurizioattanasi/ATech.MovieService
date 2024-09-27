@@ -2,6 +2,9 @@
     "rest-client.environmentVariables": {
         "local": {
             "baseUrl": "https://localhost:7102/api"
+        },
+        "dev-container": {
+            "baseUrl": "http://127.0.0.1:5224/api"
         }
     }
 }
