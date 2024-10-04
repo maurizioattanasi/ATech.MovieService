@@ -31,6 +31,15 @@ RUN apt-get install -y openssh-client
 # Switch to vscode user
 USER vscode
 
+
+# Set up the environment
+RUN mkdir -p /home/vscode/.ssh \
+    && chown -R vscode:vscode /home/vscode/.ssh
+
+# RUN chown -R vscode:vscode /home/vscode/.ssh \
+#     && chmod 700 /home/vscode/.ssh \
+#     && chmod 600 /home/vscode/.ssh/config
+
 # Set the default shell to Zsh
 SHELL ["/usr/bin/zsh", "-c"]
 
