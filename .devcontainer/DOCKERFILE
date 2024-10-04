@@ -1,6 +1,9 @@
 # Use the latest Debian stable version
 FROM mcr.microsoft.com/dotnet/sdk:8.0
 
+# Create the vscode user
+RUN useradd -ms /bin/bash vscode
+
 # Install Zsh and Oh My Zsh
 RUN apt-get update && apt-get install -y zsh wget git \
     && sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" \
@@ -8,9 +11,6 @@ RUN apt-get update && apt-get install -y zsh wget git \
 
     && apt-get install -y locales locales-all \
     && update-locale
-
-# Configure ssh
-RUN apt-get install -y openssh-client
 
 # Set up Oh My Zsh with a theme and plugins
 RUN rm -rf ~/.oh-my-zsh \
@@ -24,6 +24,12 @@ RUN rm -rf ~/.oh-my-zsh \
     && git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting \
     && git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions \
     && sed -i 's/plugins=(git)/plugins=(git zsh-syntax-highlighting zsh-autosuggestions)/' ~/.zshrc
+
+# Configure ssh
+RUN apt-get install -y openssh-client
+
+# Switch to vscode user
+USER vscode
 
 # Set the default shell to Zsh
 SHELL ["/usr/bin/zsh", "-c"]
