@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y zsh wget git \
     && update-locale
 
 # Configure ssh
+RUN apt-get install -y openssh-client
 
 # Set up Oh My Zsh with a theme and plugins
 RUN rm -rf ~/.oh-my-zsh \
