@@ -1,5 +1,5 @@
 {
-	"name": "C# (.NET 9)",
+	"name": "C# (.NET 8 LTS)",
 	"build": {
 		"dockerfile": "Dockerfile",
 		"context": "."
@@ -14,7 +14,6 @@
 		"vscode": {
 			"extensions": [
 				"ms-dotnettools.csdevkit",
-				"rangav.vscode-thunder-client",
 				"mhutchie.git-graph",
 				"humao.rest-client",
 				"TabNine.tabnine-vscode",
