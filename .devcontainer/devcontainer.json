@@ -6,7 +6,9 @@
 	},
 	"remoteUser": "root",
 	"mounts": [
-		"source=${localEnv:HOME}/.microsoft/usersecrets/movies-0f5ad21e-c898-4289-b0cf-c0b36048a644,target=/home/vscode/.microsoft/usersecrets/movies-0f5ad21e-c898-4289-b0cf-c0b36048a644,type=bind,consistency=cached"
+		"source=${localEnv:HOME}/.microsoft/usersecrets/movies-0f5ad21e-c898-4289-b0cf-c0b36048a644,target=/home/vscode/.microsoft/usersecrets/movies-0f5ad21e-c898-4289-b0cf-c0b36048a644,type=bind,consistency=cached",
+		"source=${localEnv:HOME}/.ssh,target=/home/.ssh,type=bind,consistency=cached"
+
 	],
 	"customizations": {
 		"vscode": {

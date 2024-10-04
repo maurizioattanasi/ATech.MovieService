@@ -9,6 +9,8 @@ RUN apt-get update && apt-get install -y zsh wget git \
     && apt-get install -y locales locales-all \
     && update-locale
 
+# Configure ssh
+
 # Set up Oh My Zsh with a theme and plugins
 RUN rm -rf ~/.oh-my-zsh \
     && git clone https://github.com/powerline/fonts.git \
