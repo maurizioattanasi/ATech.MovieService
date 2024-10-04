@@ -14,7 +14,12 @@
 		"vscode": {
 			"extensions": [
 				"ms-dotnettools.csdevkit",
-				"rangav.vscode-thunder-client"
+				"rangav.vscode-thunder-client",
+				"mhutchie.git-graph",
+				"humao.rest-client",
+				"TabNine.tabnine-vscode",
+				"equinusocio.vsc-material-theme-icons",
+				"ms-dotnettools.csharp"
 			],
 			"settings": {
 				"terminal.integrated.defaultProfile.linux": "zsh",
