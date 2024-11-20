@@ -35,7 +35,7 @@ builder.Host
 {
     builder
         .Services
-        .AddPresentation()
+        .AddPresentation(configuration)
         .AddApplication(configuration)
         .AddInfrastructure(configuration);
 }
@@ -50,5 +50,6 @@ var app = builder.Build();
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
+app.UseResponseCompression();
 
 app.Run();

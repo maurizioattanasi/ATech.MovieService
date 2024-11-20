@@ -3,10 +3,14 @@
 @movieId = 66da0950747a6aa08b69653c
 
 GET {{baseUrl}}/movies/{{movieId}} HTTP/1.1
+Accept-Encoding: gzip
+Content-Encoding: gzip
 
 ### Get all movies
 
-@pageNumber = 214
-@pageSize = 100
+@pageNumber = 1
+@pageSize = 200
 
 GET {{baseUrl}}/movies?pageNumber={{pageNumber}}&pageSize={{pageSize}} HTTP/1.1
+Accept-Encoding: gzip
+Content-Encoding: gzip
