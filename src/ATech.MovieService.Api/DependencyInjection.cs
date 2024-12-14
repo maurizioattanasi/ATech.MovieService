@@ -1,8 +1,6 @@
-using System;
 using System.IO.Compression;
 
-using FastEndpoints;
-using FastEndpoints.Swagger;
+using ATech.Endpoints;
 
 using Microsoft.AspNetCore.ResponseCompression;
 
@@ -14,18 +12,18 @@ public static class DependencyInjection
     {
         services
             .AddAuthorization()
-            .AddFastEndpoints()
             .AddCompression(configuration)
-            .SwaggerDocument(opt =>
-            {
-                opt.DocumentSettings = s =>
-                {
-                    s.Title = "ATech Movie Service Api";
-                    s.Version = "v1";
-                };
+            .AddEndpoints(typeof(DependencyInjection).Assembly)
+            // .SwaggerDocument(opt =>
+            // {
+            //     opt.DocumentSettings = s =>
+            //     {
+            //         s.Title = "ATech Movie Service Api";
+            //         s.Version = "v1";
+            //     };
 
-                opt.AutoTagPathSegmentIndex = 0;
-            })
+            //     opt.AutoTagPathSegmentIndex = 0;
+            // })
             ;
 
         return services;

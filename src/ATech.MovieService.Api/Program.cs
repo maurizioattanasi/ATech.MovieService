@@ -1,11 +1,9 @@
 using System.Globalization;
 
+using ATech.Endpoints;
 using ATech.MovieService.Api;
 using ATech.MovieService.Application;
 using ATech.MovieService.Infrastructure;
-
-using FastEndpoints;
-using FastEndpoints.Swagger;
 
 using Serilog;
 
@@ -43,9 +41,7 @@ builder.Host
 var app = builder.Build();
 
 {
-    app
-        .UseFastEndpoints()
-        .UseSwaggerGen();
+    app.MapEndpoints();
 }
 
 app.UseHttpsRedirection();

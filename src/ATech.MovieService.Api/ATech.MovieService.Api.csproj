@@ -9,9 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FastEndpoints" Version="5.31.0" />
-    <PackageReference Include="FastEndpoints.Security" Version="5.31.0" />
-    <PackageReference Include="FastEndpoints.Swagger" Version="5.31.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.11">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
@@ -26,6 +23,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ATech.MovieService.Application\ATech.MovieService.Application.csproj" />
     <ProjectReference Include="..\ATech.MovieService.Infrastructure\ATech.MovieService.Infrastructure.csproj" />
+    <ProjectReference Include="..\ATech.Endpoints\ATech.Endpoints.csproj" />
   </ItemGroup>
 
 </Project>
