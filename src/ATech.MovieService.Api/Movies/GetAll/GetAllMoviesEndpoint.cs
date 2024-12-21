@@ -5,7 +5,6 @@ using ATech.MovieService.Application.Movies.Queries;
 
 using MediatR;
 using Newtonsoft.Json;
-using Microsoft.AspNetCore.Mvc;
 
 namespace ATech.MovieService.Api.Movies.GetAll;
 
