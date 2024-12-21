@@ -1,13 +1,44 @@
-// using ATech.MovieService.Api.Movies.Dto;
-// using ATech.MovieService.Application.Movies.Commands;
+using ATech.Endpoints;
+using ATech.MovieService.Api.Movies.Dto;
+using ATech.MovieService.Application.Movies.Commands;
 
-// using FastEndpoints;
+using MediatR;
 
-// using MediatR;
 
-// using Microsoft.AspNetCore.Authentication.Cookies;
+namespace ATech.MovieService.Api.Movies.Create;
 
-// namespace ATech.MovieService.Api.Movies.Create;
+public class CreateMovieEndpoint : IEndpoint
+{
+    public void MapEndpoint(IEndpointRouteBuilder app)
+    {
+        app.MapPost("api/movies", HandleAsync)
+            .WithTags("movies")
+            .AllowAnonymous();
+    }
+
+    private static async Task<IResult> HandleAsync(IMediator mediator, ILogger<CreateMovieEndpoint> logger, CreateMovieRequest request, CancellationToken cancellationToken = default(CancellationToken))
+    {
+        try
+        {
+            var command = new CreateMovieCommand(request.Movie.Title, request.Movie.Rated, request.Movie.Plot);
+
+            var movie = await mediator.Send(command, cancellationToken);
+
+            if (movie is null)
+            {
+                return Results.NotFound();
+            }
+
+            return Results.Ok(MovieMapper.ToDto(movie));
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "An error occurred while creating a new movie.");
+
+            return Results.BadRequest();
+        }
+    }
+}
 
 // public class CreateMovieEndpoint(IMediator mediator, ILogger<CreateMovieEndpoint> logger)
 //     : Endpoint<CreateMovieRequest, CreateMovieResponse>

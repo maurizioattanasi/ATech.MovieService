@@ -1,56 +1,56 @@
-// using ATech.MovieService.Api.Movies.Dto;
-// using ATech.MovieService.Application.Movies.Queries;
-// using ATech.MovieService.Domain.Movies;
-// using ATech.Pagination;
+using ATech.Endpoints;
+using ATech.MovieService.Api.Movies.Dto;
+using ATech.Pagination;
+using ATech.MovieService.Application.Movies.Queries;
 
-// using FastEndpoints;
+using MediatR;
+using Newtonsoft.Json;
+using Microsoft.AspNetCore.Mvc;
 
-// using MediatR;
+namespace ATech.MovieService.Api.Movies.GetAll;
 
-// using Newtonsoft.Json;
+public class GetAllMoviesEndpoint : IEndpoint
+{
+    public void MapEndpoint(IEndpointRouteBuilder app)
+    {
+        app.MapGet("api/movies", HandleAsync)
+            .WithTags("movies")
+            .AllowAnonymous();
+    }
 
-// namespace ATech.MovieService.Api.Movies.GetAll;
+    private static async Task<IResult> HandleAsync(IMediator mediator, HttpContext context, ILogger<GetAllMoviesEndpoint> logger, int PageNumber = 1, int PageSize = 10)
+    {
+        try
+        {
+            logger.LogInformation("Getting all movies.");
 
-// public class GetAllMoviesEndpoint(IMediator mediator, ILogger<GetAllMoviesEndpoint> logger) : Endpoint<GetAllMoviesRequest, GetAllMoviesResponse>
-// {
-//     public override void Configure()
-//     {
-//         Get("api/movies");
+            var movies = await mediator.Send(new GetMoviesQuery(new PagingParameters { PageNumber = PageNumber, PageSize = PageSize }));
 
-//         Options(x => x.WithTags("Movies"));
+            if (movies is null || movies.Count() == 0)
+            {
+                return Results.NotFound();
+            }
 
-//         AllowAnonymous(Http.GET);
-//     }
+            var dtos = movies.Select(m => MovieMapper.ToDto(m));
+            var response = new GetAllMoviesResponse(new PagedList<MovieDto>(dtos.ToList(), movies.TotalCount, movies.CurrentPage, movies.PageSize));
 
-//     public override async Task HandleAsync(GetAllMoviesRequest req, CancellationToken ct)
-//     {
-//         try
-//         {
-//             logger.LogInformation("Getting all movies.");
+            var result = Results.Ok(response);
+            context.Response.Headers["x-pagination"] = response.PaginationMetadata;
 
-//             var movies = await mediator.Send(new GetMoviesQuery(new PagingParameters { PageNumber = req.PageNumber, PageSize = req.PageSize }), ct);
+            return Results.Ok(response.Movies);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "An error occurred while getting movies.");
+            return Results.BadRequest();
+        }
+    }
+}
 
-//             if (movies is null || movies.Count() == 0)
-//             {
-//                 await SendNotFoundAsync(ct);
-//                 return;
-//             }
+public record GetAllMoviesRequest(int PageNumber = 1, int PageSize = 10);
 
-//             var dtos = movies.Select(m => MovieMapper.ToDto(m));
-            
-//             Response = new GetAllMoviesResponse(new PagedList<MovieDto>(dtos.ToList(), movies.TotalCount, movies.CurrentPage, movies.PageSize));
-//         }
-//         catch (Exception ex)
-//         {
-//             logger.LogError(ex, "An error occurred while getting movies.");
-//         }
-//     }
-// }
-
-// public record GetAllMoviesRequest(int PageNumber = 1, int PageSize = 10);
-
-// public record GetAllMoviesResponse(PagedList<MovieDto> Movies)
-// {
-//     [ToHeader("x-pagination")]
-//     public string PaginationMetadata => JsonConvert.SerializeObject(Movies.PaginationMetadata);
-// }
+public record GetAllMoviesResponse(PagedList<MovieDto> Movies)
+{
+    // [ToHeader("x-pagination")]
+    public string PaginationMetadata => JsonConvert.SerializeObject(Movies.PaginationMetadata);
+}

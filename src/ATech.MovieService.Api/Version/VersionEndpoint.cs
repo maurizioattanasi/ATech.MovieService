@@ -5,17 +5,17 @@ using MediatR;
 
 namespace ATech.MovieService.Api.Version;
 
-public class VersionEndpoint(IMediator mediator) : Endpoint<VersionResponse>
+public class VersionEndpoint : IEndpoint
 {
-    public override void Configure()
+    public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        Get("api/Version");
+        app.MapGet("api/version", HandleAsync).WithTags("version").AllowAnonymous();
     }
 
-    public override async Task HandleAsync()
+    private static async Task<IResult> HandleAsync(IMediator mediator)
     {
         var version = await mediator.Send(new VersionQuery());
 
-        Response = version.ToResponse();
+        return Results.Ok(version.ToResponse());
     }
 }

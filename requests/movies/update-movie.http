@@ -1,6 +1,6 @@
 ### Update Movie
 
-@movieId = 66da0950747a6aa08b69653c
+@movieId = 6766fcea0c7c363d178c876f
 
 PATCH {{baseUrl}}/movies/{{movieId}}
 Content-Type: application/json
