@@ -18,7 +18,7 @@ public class UpdateMovieHandler(IMovieRepository repository, ILogger<UpdateMovie
         {
             logger.LogInformation("Updating movie with id: {Id}", request.Id);
 
-            var movie = await repository.GetAsync(request.Id, cancellationToken).ConfigureAwait(false);
+            var movie = await repository.GetByIdAsync(request.Id, cancellationToken).ConfigureAwait(false);
 
             if (movie is null)
             {

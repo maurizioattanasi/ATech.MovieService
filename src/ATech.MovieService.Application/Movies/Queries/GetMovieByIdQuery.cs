@@ -16,7 +16,7 @@ public class GetMovieByIdHandler(IMovieRepository movieRepository, ILogger<GetMo
     {
         logger.LogInformation("returning movie with id: {Id}", request.Id);
 
-        var movie = await movieRepository.GetAsync(request.Id, cancellationToken);
+        var movie = await movieRepository.GetByIdAsync(request.Id, cancellationToken);
 
         return movie; // Replace with actual implementation using movieRepository
     }
