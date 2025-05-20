@@ -2,11 +2,14 @@ using System.IO.Compression;
 
 using ATech.Endpoints;
 
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ATech.MovieService.Api;
 
-public static class DependencyInjection
+internal static class DependencyInjection
 {
     public static IServiceCollection AddPresentation(this IServiceCollection services, IConfiguration configuration)
     {

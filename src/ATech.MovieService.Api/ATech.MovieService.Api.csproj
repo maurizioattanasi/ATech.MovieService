@@ -1,14 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Version>1.0.0</Version>
-    <UserSecretsId>movies-0f5ad21e-c898-4289-b0cf-c0b36048a644</UserSecretsId> 
-  </PropertyGroup>
-
   <ItemGroup>
+    <PackageReference Include="ATech.Endpoints" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
@@ -24,7 +17,6 @@
   <ItemGroup>
     <ProjectReference Include="..\ATech.MovieService.Application\ATech.MovieService.Application.csproj" />
     <ProjectReference Include="..\ATech.MovieService.Infrastructure\ATech.MovieService.Infrastructure.csproj" />
-    <ProjectReference Include="..\ATech.Endpoints\ATech.Endpoints.csproj" />
   </ItemGroup>
 
 </Project>

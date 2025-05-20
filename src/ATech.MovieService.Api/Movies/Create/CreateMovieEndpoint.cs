@@ -1,13 +1,25 @@
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+
 using ATech.Endpoints;
 using ATech.MovieService.Api.Movies.Dto;
 using ATech.MovieService.Application.Movies.Commands;
 
 using MediatR;
 
+using Microsoft.AspNetCore.Builder;
+
+using Microsoft.AspNetCore.Http;
+
+using Microsoft.AspNetCore.Routing;
+
+using Microsoft.Extensions.Logging;
+
 
 namespace ATech.MovieService.Api.Movies.Create;
 
-public class CreateMovieEndpoint : IEndpoint
+internal sealed class CreateMovieEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
@@ -22,7 +34,7 @@ public class CreateMovieEndpoint : IEndpoint
         {
             var command = new CreateMovieCommand(request.Movie.Title, request.Movie.Rated, request.Movie.Plot);
 
-            var movie = await mediator.Send(command, cancellationToken);
+            var movie = await mediator.Send(command, cancellationToken).ConfigureAwait(false);
 
             if (movie is null)
             {

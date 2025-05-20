@@ -1,13 +1,23 @@
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+
 using ATech.Endpoints;
 using ATech.MovieService.Application.Common.Exceptions;
 using ATech.MovieService.Application.Movies.Commands;
 
 using MediatR;
 
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+
+using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Logging;
+
 
 namespace ATech.MovieService.Api.Movies.Delete;
 
-public class DeleteMovieEndpoint : IEndpoint
+internal sealed class DeleteMovieEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
@@ -18,7 +28,7 @@ public class DeleteMovieEndpoint : IEndpoint
     {
         try
         {
-            await mediator.Send(new DeleteMovieCommand(id), cancellationToken);
+            await mediator.Send(new DeleteMovieCommand(id), cancellationToken).ConfigureAwait(false);
 
             return Results.Ok();
         }

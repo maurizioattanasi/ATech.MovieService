@@ -4,10 +4,16 @@ using ATech.MovieService.Application.Movies.Queries;
 using ATech.Endpoints;
 
 using MediatR;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using System;
 
 namespace ATech.MovieService.Api.Movies.Get;
 
-public class GetMovieEndpoint() : IEndpoint
+internal sealed class GetMovieEndpoint() : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
@@ -24,7 +30,7 @@ public class GetMovieEndpoint() : IEndpoint
 
             var query = new GetMovieByIdQuery(id);
 
-            var movie = await mediator.Send(query);
+            var movie = await mediator.Send(query).ConfigureAwait(false);
 
             if (movie is null)
             {
@@ -41,8 +47,6 @@ public class GetMovieEndpoint() : IEndpoint
     }
 }
 
-public record GetMovieRequest(string Id);
-
-public record GetMovieResponse(MovieDto Movie);
+internal sealed record GetMovieResponse(MovieDto Movie);
 
 

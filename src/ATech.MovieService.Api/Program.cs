@@ -1,9 +1,13 @@
+using System;
 using System.Globalization;
 
 using ATech.Endpoints;
 using ATech.MovieService.Api;
 using ATech.MovieService.Application;
 using ATech.MovieService.Infrastructure;
+
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
 
 using Serilog;
 
@@ -14,7 +18,7 @@ var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?
 
 var configurationBuilder = new ConfigurationBuilder();
 
-if (environment.ToLower() == "development")
+if (environment.ToUpperInvariant() == "DEVELOPMENT")
 {
     configurationBuilder.AddUserSecrets<Program>();
 }

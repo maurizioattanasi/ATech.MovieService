@@ -5,10 +5,17 @@ using ATech.MovieService.Application.Movies.Queries;
 
 using MediatR;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
+using System.Linq;
+using System;
 
 namespace ATech.MovieService.Api.Movies.GetAll;
 
-public class GetAllMoviesEndpoint : IEndpoint
+internal sealed class GetAllMoviesEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
@@ -17,15 +24,19 @@ public class GetAllMoviesEndpoint : IEndpoint
             .AllowAnonymous();
     }
 
-    private static async Task<IResult> HandleAsync(IMediator mediator, HttpContext context, ILogger<GetAllMoviesEndpoint> logger, int PageNumber = 1, int PageSize = 10)
+    private static async Task<IResult> HandleAsync(IMediator mediator,
+                                                   HttpContext context,
+                                                   ILogger<GetAllMoviesEndpoint> logger,
+                                                   int pageNumber = 1,
+                                                   int pageSize = 10)
     {
         try
         {
             logger.LogInformation("Getting all movies.");
 
-            var movies = await mediator.Send(new GetMoviesQuery(new PagingParameters { PageNumber = PageNumber, PageSize = PageSize }));
+            var movies = await mediator.Send(new GetMoviesQuery(new PagingParameters { PageNumber = pageNumber, PageSize = pageSize })).ConfigureAwait(false);
 
-            if (movies is null || movies.Count() == 0)
+            if (movies is null || movies.Count == 0)
             {
                 return Results.NotFound();
             }
@@ -46,9 +57,9 @@ public class GetAllMoviesEndpoint : IEndpoint
     }
 }
 
-public record GetAllMoviesRequest(int PageNumber = 1, int PageSize = 10);
+internal sealed record GetAllMoviesRequest(int PageNumber = 1, int PageSize = 10);
 
-public record GetAllMoviesResponse(PagedList<MovieDto> Movies)
+internal sealed record GetAllMoviesResponse(PagedList<MovieDto> Movies)
 {
     // [ToHeader("x-pagination")]
     public string PaginationMetadata => JsonConvert.SerializeObject(Movies.PaginationMetadata);

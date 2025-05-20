@@ -1,4 +1,8 @@
 
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+
 using ATech.MovieService.Application.Common.Exceptions;
 using ATech.MovieService.Application.Movies.Commands;
 using ATech.MovieService.Application.Movies.Interfaces;
@@ -14,10 +18,10 @@ public class UpdateMovieHandler(IMovieRepository repository, ILogger<UpdateMovie
 {
     public async Task<Movie?> Handle(UpdateMovieCommand request, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(request, nameof(request));
+
         try
         {
-            logger.LogInformation("Updating movie with id: {Id}", request.Id);
-
             var movie = await repository.GetByIdAsync(request.Id, cancellationToken).ConfigureAwait(false);
 
             if (movie is null)

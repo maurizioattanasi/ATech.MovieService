@@ -1,7 +1,8 @@
+using System;
+
 using ATech.MovieService.Application.Movies.Interfaces;
 using ATech.MovieService.Infrastructure.Common.Persistence;
 using ATech.MovieService.Infrastructure.Movies;
-using ATech.Repository;
 
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -13,6 +14,8 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
+        ArgumentNullException.ThrowIfNull(configuration, nameof(configuration));
+
         services
            .AddPersistence(configuration);
 

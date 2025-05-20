@@ -1,11 +1,19 @@
+using System.Threading.Tasks;
+
 using ATech.Endpoints;
 using ATech.MovieService.Application.Version;
 
 using MediatR;
 
+using Microsoft.AspNetCore.Builder;
+
+using Microsoft.AspNetCore.Http;
+
+using Microsoft.AspNetCore.Routing;
+
 namespace ATech.MovieService.Api.Version;
 
-public class VersionEndpoint : IEndpoint
+internal sealed class VersionEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
@@ -14,7 +22,7 @@ public class VersionEndpoint : IEndpoint
 
     private static async Task<IResult> HandleAsync(IMediator mediator)
     {
-        var version = await mediator.Send(new VersionQuery());
+        var version = await mediator.Send(new VersionQuery()).ConfigureAwait(false);
 
         return Results.Ok(version.ToResponse());
     }
