@@ -1,34 +1,40 @@
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+
+using ATech.Endpoints;
 using ATech.MovieService.Application.Common.Exceptions;
 using ATech.MovieService.Application.Movies.Commands;
 
-using FastEndpoints;
-
 using MediatR;
+
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+
+using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Logging;
+
 
 namespace ATech.MovieService.Api.Movies.Delete;
 
-public class DeleteMovieEndpoint(IMediator mediator, ILogger<DeleteMovieEndpoint> logger) : Endpoint<DeleteMovieRequest, EmptyResponse>
+internal sealed class DeleteMovieEndpoint : IEndpoint
 {
-    public override void Configure()
+    public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        Delete("api/movies/{id}");
-
-        Options(x => x.WithTags("Movies"));
-
-        AllowAnonymous(Http.DELETE);
+        app.MapDelete("api/movies/{id}", HandleAsync).WithTags("movies").AllowAnonymous();
     }
 
-    public override async Task HandleAsync(DeleteMovieRequest req, CancellationToken ct)
+    public static async Task<IResult> HandleAsync(IMediator mediator, ILogger<DeleteMovieEndpoint> logger, string id, CancellationToken cancellationToken = default(CancellationToken))
     {
         try
         {
-            await mediator.Send(new DeleteMovieCommand(req.Id), ct);
+            await mediator.Send(new DeleteMovieCommand(id), cancellationToken).ConfigureAwait(false);
 
-            Response = new EmptyResponse();
+            return Results.Ok();
         }
         catch (ItemNotFoundException)
         {
-            await SendNotFoundAsync(ct);
+            return Results.NotFound();
         }
         catch (Exception ex)
         {
@@ -36,7 +42,7 @@ public class DeleteMovieEndpoint(IMediator mediator, ILogger<DeleteMovieEndpoint
             logger.LogError(ex, "An error occurred while deleting a movie.");
 
             // Return HTTP 500 Internal Server Error
-            await SendErrorsAsync(StatusCodes.Status500InternalServerError, ct);
+            return Results.BadRequest();
         }
     }
 }

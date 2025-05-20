@@ -1,47 +1,53 @@
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+
+using ATech.Endpoints;
 using ATech.MovieService.Api.Movies.Dto;
 using ATech.MovieService.Application.Movies.Commands;
 
-using FastEndpoints;
-
 using MediatR;
 
-using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Builder;
+
+using Microsoft.AspNetCore.Http;
+
+using Microsoft.AspNetCore.Routing;
+
+using Microsoft.Extensions.Logging;
+
 
 namespace ATech.MovieService.Api.Movies.Create;
 
-public class CreateMovieEndpoint(IMediator mediator, ILogger<CreateMovieEndpoint> logger)
-    : Endpoint<CreateMovieRequest, CreateMovieResponse>
+internal sealed class CreateMovieEndpoint : IEndpoint
 {
-    public override void Configure()
+    public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        Post("api/movies");
-
-        Options(x => x.WithTags("Movies"));
-
-        AllowAnonymous(Http.POST);
+        app.MapPost("api/movies", HandleAsync)
+            .WithTags("movies")
+            .AllowAnonymous();
     }
 
-    public override async Task HandleAsync(CreateMovieRequest req, CancellationToken ct)
+    private static async Task<IResult> HandleAsync(IMediator mediator, ILogger<CreateMovieEndpoint> logger, CreateMovieRequest request, CancellationToken cancellationToken = default(CancellationToken))
     {
         try
         {
-            var command = new CreateMovieCommand(req.Movie.Title, req.Movie.Rated, req.Movie.Plot);
+            var command = new CreateMovieCommand(request.Movie.Title, request.Movie.Rated, request.Movie.Plot);
 
-            var movie = await mediator.Send(command, ct);
+            var movie = await mediator.Send(command, cancellationToken).ConfigureAwait(false);
 
             if (movie is null)
             {
-                await SendErrorsAsync(StatusCodes.Status400BadRequest, ct);
-                return;
+                return Results.NotFound();
             }
 
-            Response = new CreateMovieResponse(MovieMapper.ToDto(movie));
+            return Results.Ok(MovieMapper.ToDto(movie));
         }
         catch (Exception ex)
         {
             logger.LogError(ex, "An error occurred while creating a new movie.");
 
-            await SendErrorsAsync(StatusCodes.Status500InternalServerError, ct);
+            return Results.BadRequest();
         }
     }
 }

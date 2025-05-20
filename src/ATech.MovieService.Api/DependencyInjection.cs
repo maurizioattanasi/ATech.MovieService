@@ -1,31 +1,32 @@
-using System;
 using System.IO.Compression;
 
-using FastEndpoints;
-using FastEndpoints.Swagger;
+using ATech.Endpoints;
 
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ATech.MovieService.Api;
 
-public static class DependencyInjection
+internal static class DependencyInjection
 {
     public static IServiceCollection AddPresentation(this IServiceCollection services, IConfiguration configuration)
     {
         services
             .AddAuthorization()
-            .AddFastEndpoints()
             .AddCompression(configuration)
-            .SwaggerDocument(opt =>
-            {
-                opt.DocumentSettings = s =>
-                {
-                    s.Title = "ATech Movie Service Api";
-                    s.Version = "v1";
-                };
+            .AddEndpoints(typeof(DependencyInjection).Assembly)
+            // .SwaggerDocument(opt =>
+            // {
+            //     opt.DocumentSettings = s =>
+            //     {
+            //         s.Title = "ATech Movie Service Api";
+            //         s.Version = "v1";
+            //     };
 
-                opt.AutoTagPathSegmentIndex = 0;
-            })
+            //     opt.AutoTagPathSegmentIndex = 0;
+            // })
             ;
 
         return services;

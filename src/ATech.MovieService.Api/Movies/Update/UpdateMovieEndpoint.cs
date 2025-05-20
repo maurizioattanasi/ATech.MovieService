@@ -1,43 +1,52 @@
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+
+using ATech.Endpoints;
 using ATech.MovieService.Api.Movies.Dto;
 using ATech.MovieService.Application.Common.Exceptions;
 using ATech.MovieService.Application.Movies.Commands;
 
-using FastEndpoints;
-
 using MediatR;
+
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+
+using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Logging;
+
 
 namespace ATech.MovieService.Api.Movies.Update;
 
-public class UpdateMovieEndpoint(IMediator mediator, ILogger<UpdateMovieEndpoint> logger) : Endpoint<UpdateMovieRequest, UpdateMovieRequestResponse>
+internal sealed class UpdateMovieEndpoint : IEndpoint
 {
-    public override void Configure()
+    public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        Patch("api/movies/{id}");
-
-        Options(x => x.WithTags("Movies"));
-
-        AllowAnonymous(Http.PATCH);
+        app.MapPatch("api/movies/{id}", HandleAsync).WithTags("movies").AllowAnonymous();
     }
 
-    public override async Task HandleAsync(UpdateMovieRequest req, CancellationToken ct)
+    public static async Task<IResult> HandleAsync(IMediator mediator,
+                                                  ILogger<UpdateMovieEndpoint> logger,
+                                                  string id,
+                                                  UpdateMovieRequest request,
+                                                  CancellationToken cancellationToken = default(CancellationToken))
     {
         try
         {
-            var command = new UpdateMovieCommand(req.Id, req.Movie.Title, req.Movie.Rated, req.Movie.Plot);
+            var command = new UpdateMovieCommand(id, request.Movie.Title, request.Movie.Rated, request.Movie.Plot);
 
-            var updatedMovie = await mediator.Send(command, ct);
+            var updatedMovie = await mediator.Send(command, cancellationToken).ConfigureAwait(false);
 
             if (updatedMovie is null)
             {
-                await SendNotFoundAsync(ct);
-                return;
+                return Results.NoContent();
             }
 
-            Response = new UpdateMovieRequestResponse(MovieMapper.ToDto(updatedMovie));
+            return Results.Ok(new UpdateMovieRequestResponse(MovieMapper.ToDto(updatedMovie)));
         }
         catch (ItemNotFoundException)
         {
-            await SendNotFoundAsync(ct);
+            return Results.NotFound();
         }
         catch (Exception ex)
         {
@@ -45,7 +54,7 @@ public class UpdateMovieEndpoint(IMediator mediator, ILogger<UpdateMovieEndpoint
             logger.LogError(ex, "An error occurred while updating a movie.");
 
             // Return HTTP 500 Internal Server Error
-            await SendErrorsAsync(StatusCodes.Status500InternalServerError, ct);
+            return Results.BadRequest();
         }
     }
 }

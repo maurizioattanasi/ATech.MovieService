@@ -1,4 +1,8 @@
 
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+
 using ATech.MovieService.Application.Movies.Interfaces;
 using ATech.MovieService.Domain.Movies;
 
@@ -14,9 +18,14 @@ public class GetMovieByIdHandler(IMovieRepository movieRepository, ILogger<GetMo
 {
     public async Task<Movie?> Handle(GetMovieByIdQuery request, CancellationToken cancellationToken)
     {
+        ArgumentNullException.ThrowIfNull(request);
+        ArgumentNullException.ThrowIfNull(movieRepository);
+
         logger.LogInformation("returning movie with id: {Id}", request.Id);
 
-        var movie = await movieRepository.GetAsync(request.Id, cancellationToken);
+        var movie = await movieRepository
+            .GetByIdAsync(request.Id, cancellationToken)
+            .ConfigureAwait(false);
 
         return movie; // Replace with actual implementation using movieRepository
     }

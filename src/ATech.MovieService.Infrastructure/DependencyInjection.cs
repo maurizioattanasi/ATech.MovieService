@@ -1,3 +1,5 @@
+using System;
+
 using ATech.MovieService.Application.Movies.Interfaces;
 using ATech.MovieService.Infrastructure.Common.Persistence;
 using ATech.MovieService.Infrastructure.Movies;
@@ -12,6 +14,8 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
+        ArgumentNullException.ThrowIfNull(configuration, nameof(configuration));
+
         services
            .AddPersistence(configuration);
 
@@ -33,7 +37,7 @@ public static class DependencyInjection
             .AddDbContext<AppDbContext>(options => options.UseMongoDB(connectionString, dbSettings.DataBaseName));
 
         services.AddScoped<IMovieRepository, MovieRepository>();
-        
+
         return services;
     }
 

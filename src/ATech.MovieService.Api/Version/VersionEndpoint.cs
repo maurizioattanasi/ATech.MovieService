@@ -1,33 +1,29 @@
-using ATech.MovieService.Application.Version;
+using System.Threading.Tasks;
 
-using FastEndpoints;
+using ATech.Endpoints;
+using ATech.MovieService.Application.Version;
 
 using MediatR;
 
+using Microsoft.AspNetCore.Builder;
+
+using Microsoft.AspNetCore.Http;
+
+using Microsoft.AspNetCore.Routing;
+
 namespace ATech.MovieService.Api.Version;
 
-public class VersionEndpoint(IMediator mediator) : Endpoint<EmptyRequest, VersionResponse, VersionResponseMapper>
+internal sealed class VersionEndpoint : IEndpoint
 {
-    public override void Configure()
+    public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        Get("api/Version");
-
-        Options(opt=>opt.WithTags("Version"));
-
-        AllowAnonymous(Http.GET);
+        app.MapGet("api/version", HandleAsync).WithTags("version").AllowAnonymous();
     }
 
-    public override async Task HandleAsync(EmptyRequest req, CancellationToken ct)
+    private static async Task<IResult> HandleAsync(IMediator mediator)
     {
-        var response = await mediator.Send(new VersionQuery());
+        var version = await mediator.Send(new VersionQuery()).ConfigureAwait(false);
 
-        Response = Map.FromEntity(response);
+        return Results.Ok(version.ToResponse());
     }
 }
-
-public class VersionResponseMapper : Mapper<EmptyRequest, VersionResponse, VersionResult>
-{
-    public override VersionResponse FromEntity(VersionResult e) => new VersionResponse(e.Version);
-}
-
-public record VersionResponse(string Version);

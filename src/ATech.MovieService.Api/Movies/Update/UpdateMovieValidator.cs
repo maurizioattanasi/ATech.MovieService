@@ -1,15 +1,15 @@
-using FastEndpoints;
+// using FastEndpoints;
 
-using FluentValidation;
+// using FluentValidation;
 
-namespace ATech.MovieService.Api.Movies.Update;
+// namespace ATech.MovieService.Api.Movies.Update;
 
-public class UpdateMovieValidator : Validator<UpdateMovieRequest>
-{
-    public UpdateMovieValidator()
-    {
-        RuleFor(x => x.Id)
-            .NotEmpty()
-            .WithMessage("Movie ID is required.");
-    }
-}
+// public class UpdateMovieValidator : Validator<UpdateMovieRequest>
+// {
+//     public UpdateMovieValidator()
+//     {
+//         RuleFor(x => x.Id)
+//             .NotEmpty()
+//             .WithMessage("Movie ID is required.");
+//     }
+// }

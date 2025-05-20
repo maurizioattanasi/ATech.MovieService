@@ -1,4 +1,8 @@
 
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+
 using ATech.MovieService.Application.Movies.Interfaces;
 using ATech.MovieService.Domain.Movies;
 using ATech.MovieService.Infrastructure.Common.Persistence;
@@ -13,6 +17,8 @@ public class MovieRepository(AppDbContext context)
 {
     public async Task<Movie?> CreateMovieAsync(Movie movie, CancellationToken cancellationToken = default)
     {
+        ArgumentNullException.ThrowIfNull(movie, nameof(movie));
+        
         var newMovie = new Movie
         {
             Id = ObjectId.GenerateNewId().ToString(),

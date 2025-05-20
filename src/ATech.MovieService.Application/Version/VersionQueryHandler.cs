@@ -1,3 +1,7 @@
+using System;
+using System.Threading;
+using System.Threading.Tasks;
+
 using MediatR;
 
 using Microsoft.Extensions.Logging;
@@ -19,6 +23,6 @@ public class VersionQueryHandler(ILogger<VersionQueryHandler> logger) : IRequest
 
         var version = assemblyName.Version?.ToString() ?? string.Empty;
 
-        return await Task.FromResult(new VersionResult(version));
+        return await Task.FromResult(new VersionResult(version)).ConfigureAwait(false);
     }
 }

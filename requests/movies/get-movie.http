@@ -1,6 +1,6 @@
 ### Get movie by Id
 
-@movieId = 66da0950747a6aa08b69653c
+@movieId = 6766fcea0c7c363d178c876f
 
 GET {{baseUrl}}/movies/{{movieId}} HTTP/1.1
 Accept-Encoding: gzip
@@ -9,7 +9,7 @@ Content-Encoding: gzip
 ### Get all movies
 
 @pageNumber = 1
-@pageSize = 200
+@pageSize = 100
 
 GET {{baseUrl}}/movies?pageNumber={{pageNumber}}&pageSize={{pageSize}} HTTP/1.1
 Accept-Encoding: gzip

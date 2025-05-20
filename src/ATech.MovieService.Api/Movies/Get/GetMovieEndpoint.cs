@@ -1,49 +1,52 @@
 using ATech.MovieService.Api.Movies.Dto;
 using ATech.MovieService.Application.Movies.Queries;
 
-using FastEndpoints;
+using ATech.Endpoints;
 
 using MediatR;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using System;
 
 namespace ATech.MovieService.Api.Movies.Get;
 
-public class GetMovieEndpoint(IMediator mediator, ILogger<GetMovieEndpoint> logger) : Endpoint<GetMovieRequest, GetMovieResponse>
+internal sealed class GetMovieEndpoint() : IEndpoint
 {
-    public override void Configure()
+    public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        Get("api/movies/{id}");
-
-        Options(x => x.WithTags("Movies"));
-
-        AllowAnonymous(Http.GET);
+        app.MapGet("api/movies/{id}", HandleAsync)
+            .WithTags("movie")
+            .AllowAnonymous();
     }
 
-    public override async Task HandleAsync(GetMovieRequest req, CancellationToken ct)
+    private static async Task<IResult> HandleAsync(IMediator mediator, ILogger<GetMovieEndpoint> logger, string id)
     {
         try
         {
-            logger.LogInformation("Getting movie with ID: {Id}", req.Id);
+            logger.LogInformation("Getting movie with ID: {Id}", id);
 
-            var query = new GetMovieByIdQuery(req.Id);
+            var query = new GetMovieByIdQuery(id);
 
-            var movie = await mediator.Send(query, ct);
+            var movie = await mediator.Send(query).ConfigureAwait(false);
 
             if (movie is null)
             {
-                await SendNotFoundAsync(ct);
-                return;
+                return Results.NotFound();
             }
 
-            Response = new GetMovieResponse(MovieMapper.ToDto(movie));
+            return Results.Ok(new GetMovieResponse(MovieMapper.ToDto(movie)));
         }
         catch (Exception ex)
         {
             logger.LogError(ex, "An error occurred while getting movie.");
-            await SendErrorsAsync(StatusCodes.Status500InternalServerError, ct);
+            return Results.BadRequest();
         }
     }
 }
 
-public record GetMovieRequest(string Id);
+internal sealed record GetMovieResponse(MovieDto Movie);
 
-public record GetMovieResponse(MovieDto Movie);
+
