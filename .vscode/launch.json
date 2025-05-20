@@ -9,7 +9,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/src/ATech.MovieService.Api/bin/Debug/net8.0/ATech.MovieService.Api.dll",
+            "program": "${workspaceFolder}/src/ATech.MovieService.Api/bin/Debug/net9.0/ATech.MovieService.Api.dll",
             "args": [],
             "cwd": "${workspaceFolder}/src/ATech.MovieService.Api",
             "stopAtEntry": false,
